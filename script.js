@@ -12,25 +12,25 @@ const sceneContent = {
   winter: {
     title: "Winter comfort",
     text: "Soft frost, warm interior light, and a calmer view for rooms that need both insulation and atmosphere.",
-    image: "assets/WSPT4_edited.png",
-    alt: "Window Scene seasonal product possibilities collage",
+    image: "assets/WSPT4.1_edited.png",
+    alt: "Window Scene illustrated warm landscape design possibility",
   },
   modern: {
     title: "Minimal modern",
     text: "Clean geometry and frosted privacy for apartments, offices, and interiors that need a refined finish.",
-    image: "assets/WSPT2_edited.png",
+    image: "assets/WSPT2.2_edited.png",
     alt: "Office window transformed with a modern scenic Window Scene panel",
   },
   holiday: {
     title: "Seasonal atmosphere",
     text: "Reusable holiday or event designs that can be changed without throwing away a single-use kit.",
-    image: "assets/WSPT1_edited.png",
-    alt: "Home window before and after with warm decorative Window Scene panel",
+    image: "assets/WSPT4.3_edited.png",
+    alt: "Window Scene illustrated pastel interior design possibility",
   },
   commercial: {
     title: "Commercial exterior",
     text: "A path toward storefront, hospitality, and property-management panels with branded visual surfaces.",
-    image: "assets/WSPT3_edited.png",
+    image: "assets/WSPT3.2_edited.png",
     alt: "Commercial exterior window before and after with Window Scene panel concept",
   },
 };

@@ -331,10 +331,45 @@ h3 {
   object-fit: cover;
 }
 
-.product-hero-card img {
-  aspect-ratio: 1536 / 853;
+.before-after-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.before-after-pair div {
+  position: relative;
+  overflow: hidden;
   border-radius: 20px;
   background: #111827;
+}
+
+.before-after-pair img {
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
+  transition: transform 400ms ease;
+}
+
+.before-after-pair.wide img {
+  aspect-ratio: 16 / 9;
+}
+
+.before-after-pair div:hover img {
+  transform: scale(1.035);
+}
+
+.before-after-pair span {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: rgba(7, 16, 25, 0.72);
+  color: var(--ink);
+  font-size: 0.74rem;
+  font-weight: 900;
+  backdrop-filter: blur(10px);
 }
 
 .product-hero-card figcaption {
@@ -437,12 +472,6 @@ h3 {
   box-shadow: var(--shadow);
 }
 
-.product-proof img {
-  aspect-ratio: 1536 / 853;
-  border-radius: 22px;
-  background: #0b121a;
-}
-
 .product-proof h3 {
   font-size: clamp(1.5rem, 2.4vw, 2.4rem);
   line-height: 1.1;
@@ -542,6 +571,7 @@ h3 {
 .scene-window-photo img {
   aspect-ratio: 1536 / 853;
   border-radius: inherit;
+  object-fit: contain;
   transition: opacity 200ms ease, transform 300ms ease;
 }
 
