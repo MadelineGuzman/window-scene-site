@@ -4,6 +4,7 @@ const tabs = document.querySelectorAll(".scene-tab");
 const showcase = document.querySelector(".scene-showcase");
 const sceneTitle = document.querySelector("[data-scene-title]");
 const sceneText = document.querySelector("[data-scene-text]");
+const sceneImage = document.querySelector("[data-scene-image]");
 const form = document.querySelector(".lead-form");
 const formNote = document.querySelector("[data-form-note]");
 
@@ -11,18 +12,26 @@ const sceneContent = {
   winter: {
     title: "Winter comfort",
     text: "Soft frost, warm interior light, and a calmer view for rooms that need both insulation and atmosphere.",
+    image: "assets/WSPT4_edited.png",
+    alt: "Window Scene seasonal product possibilities collage",
   },
   modern: {
     title: "Minimal modern",
     text: "Clean geometry and frosted privacy for apartments, offices, and interiors that need a refined finish.",
+    image: "assets/WSPT2_edited.png",
+    alt: "Office window transformed with a modern scenic Window Scene panel",
   },
   holiday: {
     title: "Seasonal atmosphere",
     text: "Reusable holiday or event designs that can be changed without throwing away a single-use kit.",
+    image: "assets/WSPT1_edited.png",
+    alt: "Home window before and after with warm decorative Window Scene panel",
   },
   commercial: {
     title: "Commercial exterior",
     text: "A path toward storefront, hospitality, and property-management panels with branded visual surfaces.",
+    image: "assets/WSPT3_edited.png",
+    alt: "Commercial exterior window before and after with Window Scene panel concept",
   },
 };
 
@@ -56,6 +65,8 @@ tabs.forEach((tab) => {
     showcase.dataset.currentScene = scene;
     sceneTitle.textContent = content.title;
     sceneText.textContent = content.text;
+    sceneImage.src = content.image;
+    sceneImage.alt = content.alt;
   });
 });
 
