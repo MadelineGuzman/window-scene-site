@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Interactive Window Scene demo: drag to reveal the before/after and swap seasonal scenes to see the year-round, interchangeable insulation system in action.">
+    <title>Interactive Demo | Window Scene</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      .demo-main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: clamp(1.5rem, 4vw, 3rem) clamp(1.1rem, 4vw, 2rem) 4rem;
+      }
+
+      .demo-intro {
+        text-align: center;
+        margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+      }
+
+      .demo-intro h1 {
+        margin: 0.4rem 0 0.6rem;
+        font-size: clamp(2rem, 5vw, 3rem);
+      }
+
+      .demo-intro p {
+        color: var(--muted);
+        max-width: 46ch;
+        margin: 0 auto;
+      }
+
+      .demo-card {
+        background: var(--glass);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        padding: clamp(1.1rem, 3vw, 2rem);
+        margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .demo-card h2 {
+        margin: 0 0 0.35rem;
+        font-size: clamp(1.3rem, 3vw, 1.7rem);
+      }
+
+      .demo-card .demo-hint {
+        color: var(--muted);
+        margin: 0 0 1.1rem;
+        font-size: 0.95rem;
+      }
+
+      /* Before / after drag-to-reveal */
+      .compare {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        border-radius: 16px;
+        overflow: hidden;
+        user-select: none;
+        touch-action: none;
+        border: 1px solid var(--line);
+      }
+
+      .compare img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+      }
+
+      .compare .after-wrap {
+        position: absolute;
+        inset: 0;
+        clip-path: inset(0 50% 0 0);
+      }
+
+      .compare-label {
+        position: absolute;
+        bottom: 0.85rem;
+        padding: 0.35rem 0.8rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        background: var(--glass-strong);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--ink);
+      }
+
+      .compare-label.before { left: 0.85rem; }
+      .compare-label.after { right: 0.85rem; }
+
+      .compare-handle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 3px;
+        background: var(--cyan);
+        transform: translateX(-50%);
+        pointer-events: none;
+      }
+
+      .compare-grip {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: var(--cyan);
+        color: var(--charcoal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        font-weight: 700;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+        cursor: ew-resize;
+      }
+
+      .compare-range {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        opacity: 0;
+        cursor: ew-resize;
+      }
+
+      /* Scene switcher */
+      .scene-stage {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+      }
+
+      .scene-stage img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: opacity 0.35s ease;
+      }
+
+      .scene-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin: 1.1rem 0;
+      }
+
+      .scene-chip {
+        padding: 0.55rem 1.15rem;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--ink);
+        font: inherit;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: background 0.2s ease, border-color 0.2s ease;
+      }
+
+      .scene-chip:hover { border-color: var(--cyan); }
+
+      .scene-chip.active {
+        background: var(--blue);
+        border-color: var(--cyan);
+      }
+
+      .scene-caption {
+        display: flex;
+        gap: 0.9rem;
+        align-items: flex-start;
+        margin-top: 1.1rem;
+        padding: 1rem 1.1rem;
+        background: var(--glass-strong);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+      }
+
+      .scene-caption .badge {
+        flex: none;
+        padding: 0.3rem 0.7rem;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        background: var(--cyan);
+        color: var(--charcoal);
+        font-weight: 700;
+      }
+
+      .scene-caption p { margin: 0; color: var(--soft); }
+      .scene-caption strong { color: var(--ink); }
+
+      .demo-foot {
+        text-align: center;
+        margin-top: 2.5rem;
+      }
+
+      .demo-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.95rem;
+      }
+
+      .demo-back:hover { color: var(--ink); }
+
+      @media (min-width: 820px) {
+        .scene-layout {
+          display: grid;
+          grid-template-columns: 1.3fr 1fr;
+          gap: 1.5rem;
+          align-items: start;
+        }
+      }
+
+      /* Upload-your-window preview */
+      .upload-controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 1rem;
+      }
+
+      .upload-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.6rem 1.3rem;
+        border-radius: 999px;
+        background: var(--blue);
+        border: 1px solid var(--cyan);
+        color: var(--ink);
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .upload-btn:hover { background: #0c6cb4; }
+      .upload-btn input { display: none; }
+
+      .upload-scenes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .toggle-panel {
+        padding: 0.55rem 1.1rem;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--ink);
+        font: inherit;
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+
+      .toggle-panel:hover { border-color: var(--cyan); }
+
+      .upload-empty {
+        color: var(--muted);
+        font-size: 0.95rem;
+        padding: 2.5rem 1rem;
+        text-align: center;
+        border: 1px dashed var(--line);
+        border-radius: 14px;
+      }
+
+      .upload-stage {
+        position: relative;
+        width: 100%;
+        max-height: 70vh;
+        overflow: hidden;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        touch-action: none;
+      }
+
+      .upload-stage img[data-upload-photo] {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 70vh;
+        object-fit: contain;
+        background: #02080f;
+        pointer-events: none;
+      }
+
+      .upload-panel {
+        position: absolute;
+        left: 30%;
+        top: 25%;
+        width: 40%;
+        height: 45%;
+        border: 2px solid var(--cyan);
+        border-radius: 6px;
+        overflow: hidden;
+        cursor: grab;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+
+      .upload-panel.dragging { cursor: grabbing; }
+
+      .upload-panel-img {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .upload-panel-tag {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        padding: 0.2rem 0.55rem;
+        font-size: 0.7rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        background: var(--glass-strong);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--ink);
+        pointer-events: none;
+      }
+
+      .resize-grip {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 22px;
+        height: 22px;
+        background: var(--cyan);
+        border-top-left-radius: 6px;
+        cursor: nwse-resize;
+        touch-action: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" data-header>
+      <a class="brand" href="index.html" aria-label="Window Scene home">
+        <span class="brand-mark"><img src="assets/ghost-logo.png" alt=""></span>
+        <span>
+          <strong>Window Scene</strong>
+          <small>Interactive demo</small>
+        </span>
+      </a>
+      <a class="header-cta" href="index.html#waitlist">Join Waitlist</a>
+    </header>
+
+    <main class="demo-main">
+      <div class="demo-intro">
+        <p class="eyebrow">Interactive pitch demo</p>
+        <h1>See Window Scene on a window.</h1>
+        <p>Drag to reveal the transformation, then swap scenes to feel the interchangeable, year-round system — warm in winter, cool in summer.</p>
+      </div>
+
+      <section class="demo-card">
+        <h2>Before &amp; after</h2>
+        <p class="demo-hint">Drag the handle (or slide) to compare the bare window with a Window Scene panel installed.</p>
+        <div class="compare" data-compare>
+          <img src="assets/WSPT2.1_web.png" alt="Office window before Window Scene">
+          <div class="after-wrap" data-after-wrap>
+            <img src="assets/WSPT2.2_edited.png" alt="Office window with Window Scene panel installed">
+          </div>
+          <span class="compare-label before">Before</span>
+          <span class="compare-label after">With Window Scene</span>
+          <div class="compare-handle" data-handle></div>
+          <div class="compare-grip" data-grip aria-hidden="true">⇆</div>
+          <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Reveal before and after">
+        </div>
+      </section>
+
+      <section class="demo-card">
+        <h2>One window. Many scenes.</h2>
+        <p class="demo-hint">Tap a scene to swap the panel — the same window, reused season after season.</p>
+        <div class="scene-layout">
+          <div class="scene-stage">
+            <img data-demo-scene-image src="assets/scenes/winter.svg" alt="Winter warmth Window Scene panel">
+          </div>
+          <div>
+            <div class="scene-chips" role="tablist" aria-label="Demo scenes">
+              <button class="scene-chip active" type="button" data-demo-scene="winter">Winter</button>
+              <button class="scene-chip" type="button" data-demo-scene="summer">Summer</button>
+              <button class="scene-chip" type="button" data-demo-scene="holiday">Holiday</button>
+              <button class="scene-chip" type="button" data-demo-scene="modern">Modern</button>
+              <button class="scene-chip" type="button" data-demo-scene="commercial">Commercial</button>
+            </div>
+            <div class="scene-caption">
+              <span class="badge" data-demo-badge>Winter</span>
+              <p data-demo-caption><strong>Winter warmth.</strong> Holds heat in and keeps drafts out — warmer rooms and a lower heating bill.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-card">
+        <h2>Preview it on your own window</h2>
+        <p class="demo-hint">Upload a photo of your window, pick a scene, then drag and resize the panel to fit the glass. Your photo stays in your browser — nothing is uploaded.</p>
+        <div class="upload-controls">
+          <label class="upload-btn">
+            <input type="file" accept="image/*" data-upload>
+            Upload window photo
+          </label>
+          <div class="upload-scenes" data-upload-scenes hidden>
+            <button class="scene-chip active" type="button" data-upload-scene="winter">Winter</button>
+            <button class="scene-chip" type="button" data-upload-scene="summer">Summer</button>
+            <button class="scene-chip" type="button" data-upload-scene="holiday">Holiday</button>
+            <button class="scene-chip" type="button" data-upload-scene="modern">Modern</button>
+            <button class="scene-chip" type="button" data-upload-scene="commercial">Commercial</button>
+          </div>
+          <button class="toggle-panel" type="button" data-toggle-panel hidden>Hide panel</button>
+        </div>
+        <p class="upload-empty" data-upload-empty>No photo yet — upload one to preview a Window Scene panel on it.</p>
+        <div class="upload-stage" data-upload-stage hidden>
+          <img data-upload-photo alt="Your uploaded window">
+          <div class="upload-panel" data-upload-panel>
+            <div class="upload-panel-img" data-upload-panel-img></div>
+            <span class="upload-panel-tag">Window Scene</span>
+            <div class="resize-grip" data-resize-grip aria-hidden="true"></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="demo-foot">
+        <a class="demo-back" href="index.html">&larr; Back to Window Scene</a>
+      </div>
+    </main>
+
+    <script src="demo.js"></script>
+  </body>
+</html>

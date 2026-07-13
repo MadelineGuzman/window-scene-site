@@ -10,28 +10,34 @@ const formNote = document.querySelector("[data-form-note]");
 
 const sceneContent = {
   winter: {
-    title: "Winter comfort",
-    text: "Soft frost, warm interior light, and a calmer view for rooms that need both insulation and atmosphere.",
-    image: "assets/WSPT4.1_edited.png",
-    alt: "Window Scene illustrated warm landscape design possibility",
+    title: "Winter warmth",
+    text: "Adds an insulating layer that holds heat in and keeps drafts out — warmer rooms, lower heating bills, and a calmer view.",
+    image: "assets/scenes/winter.svg",
+    alt: "Winter warmth Window Scene panel",
+  },
+  summer: {
+    title: "Summer cooling",
+    text: "Reflective, sun-blocking panels keep heat and glare out so the AC works less — a year-round must in hot Southern climates, not just a winter fix.",
+    image: "assets/scenes/summer.svg",
+    alt: "Summer cooling Window Scene panel blocking sun and heat",
   },
   modern: {
     title: "Minimal modern",
     text: "Clean geometry and frosted privacy for apartments, offices, and interiors that need a refined finish.",
-    image: "assets/WSPT2.2_edited.png",
-    alt: "Office window transformed with a modern scenic Window Scene panel",
+    image: "assets/scenes/modern.svg",
+    alt: "Minimal modern Window Scene panel",
   },
   holiday: {
     title: "Seasonal atmosphere",
     text: "Reusable holiday or event designs that can be changed without throwing away a single-use kit.",
-    image: "assets/WSPT4.3_edited.png",
-    alt: "Window Scene illustrated pastel interior design possibility",
+    image: "assets/scenes/holiday.svg",
+    alt: "Seasonal holiday Window Scene panel",
   },
   commercial: {
     title: "Commercial exterior",
     text: "A path toward storefront, hospitality, and property-management panels with branded visual surfaces.",
-    image: "assets/WSPT3.2_edited.png",
-    alt: "Commercial exterior window before and after with Window Scene panel concept",
+    image: "assets/scenes/commercial.svg",
+    alt: "Commercial Window Scene panel",
   },
 };
 
@@ -74,4 +80,41 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   form.reset();
   formNote.textContent = "You are on the early interest list. Thank you for joining the scene.";
+});
+
+// Click-to-expand lightbox for product mockups
+const lightbox = document.createElement("div");
+lightbox.className = "lightbox";
+lightbox.setAttribute("role", "dialog");
+lightbox.setAttribute("aria-modal", "true");
+lightbox.innerHTML =
+  '<button class="lightbox-close" type="button" aria-label="Close image">×</button>' +
+  '<img alt="">';
+document.body.appendChild(lightbox);
+
+const lightboxImage = lightbox.querySelector("img");
+const lightboxClose = lightbox.querySelector(".lightbox-close");
+
+function openLightbox(src, alt) {
+  lightboxImage.src = src;
+  lightboxImage.alt = alt || "";
+  lightbox.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeLightbox() {
+  lightbox.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+document.querySelectorAll(".zoomable").forEach((img) => {
+  img.addEventListener("click", () => openLightbox(img.currentSrc || img.src, img.alt));
+});
+
+lightboxClose.addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", (event) => {
+  if (event.target === lightbox || event.target === lightboxImage) closeLightbox();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && lightbox.classList.contains("open")) closeLightbox();
 });

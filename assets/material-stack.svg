@@ -1,0 +1,108 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, 'Segoe UI', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#03111f"/>
+      <stop offset="1" stop-color="#010610"/>
+    </linearGradient>
+    <linearGradient id="scene" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#35baff"/>
+      <stop offset="0.5" stop-color="#e881a8"/>
+      <stop offset="1" stop-color="#ffb36b"/>
+    </linearGradient>
+    <linearGradient id="reflect" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#dff3ff"/>
+      <stop offset="0.5" stop-color="#8bd8ff"/>
+      <stop offset="1" stop-color="#cfeeff"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0e4f80"/>
+      <stop offset="1" stop-color="#0a5d9c"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="640" rx="22" fill="url(#bg)"/>
+  <rect x="0.5" y="0.5" width="959" height="639" rx="22" fill="none" stroke="rgba(84,186,255,0.28)"/>
+
+  <!-- Heading -->
+  <text x="48" y="64" fill="#f7fbff" font-size="30" font-weight="700">Window Scene — material stack</text>
+  <text x="48" y="92" fill="#b8cee3" font-size="16">Exploded view of one panel, glass side to room side.</text>
+
+  <!-- Orientation axis -->
+  <g stroke="#35baff" stroke-width="2" fill="#8bd8ff">
+    <line x1="92" y1="540" x2="92" y2="180" stroke-dasharray="4 6"/>
+    <path d="M92 172 l-7 14 h14 z" stroke="none" fill="#35baff"/>
+  </g>
+  <text x="108" y="558" fill="#b8cee3" font-size="13" letter-spacing="1">WINDOW GLASS</text>
+  <text x="108" y="178" fill="#b8cee3" font-size="13" letter-spacing="1">ROOM SIDE</text>
+
+  <!-- Layers: each is a parallelogram top face + front + right thickness faces.
+       W=300 D=80 Dh=46 T=18. Stacked with 84px vertical gap. -->
+
+  <!-- Layer 5 — Decorative printed face (room side, top) -->
+  <g>
+    <path d="M210 168 h300 l80 -46 h-300 z" fill="url(#scene)" opacity="0.95"/>
+    <path d="M210 168 h300 v18 h-300 z" fill="#1c2e44"/>
+    <path d="M510 168 l80 -46 v18 l-80 46 z" fill="#13243a"/>
+    <path d="M210 168 h300 l80 -46 h-300 z" fill="none" stroke="rgba(255,255,255,0.35)"/>
+    <line x1="555" y1="139" x2="660" y2="139" stroke="rgba(84,186,255,0.5)"/>
+    <circle cx="555" cy="139" r="3" fill="#35baff"/>
+  </g>
+  <text x="668" y="130" fill="#f7fbff" font-size="17" font-weight="600">Decorative printed face</text>
+  <text x="668" y="152" fill="#b8cee3" font-size="13">UV-stable print — the swappable "scene"</text>
+
+  <!-- Layer 4 — Structural backing -->
+  <g>
+    <path d="M210 252 h300 l80 -46 h-300 z" fill="#0a1b2c"/>
+    <path d="M210 252 h300 v18 h-300 z" fill="#06121e"/>
+    <path d="M510 252 l80 -46 v18 l-80 46 z" fill="#050f18"/>
+    <path d="M210 252 h300 l80 -46 h-300 z" fill="none" stroke="rgba(84,186,255,0.4)"/>
+    <line x1="555" y1="223" x2="660" y2="223" stroke="rgba(84,186,255,0.5)"/>
+    <circle cx="555" cy="223" r="3" fill="#35baff"/>
+  </g>
+  <text x="668" y="214" fill="#f7fbff" font-size="17" font-weight="600">Structural backing</text>
+  <text x="668" y="236" fill="#b8cee3" font-size="13">Rigid yet rollable — holds print flat</text>
+
+  <!-- Layer 3 — Insulating core -->
+  <g>
+    <path d="M210 336 h300 l80 -46 h-300 z" fill="url(#core)"/>
+    <path d="M210 336 h300 v18 h-300 z" fill="#072136"/>
+    <path d="M510 336 l80 -46 v18 l-80 46 z" fill="#051a2b"/>
+    <path d="M210 336 h300 l80 -46 h-300 z" fill="none" stroke="rgba(139,216,255,0.5)"/>
+    <line x1="555" y1="307" x2="660" y2="307" stroke="rgba(84,186,255,0.5)"/>
+    <circle cx="555" cy="307" r="3" fill="#35baff"/>
+  </g>
+  <text x="668" y="298" fill="#f7fbff" font-size="17" font-weight="600">Insulating core</text>
+  <text x="668" y="320" fill="#b8cee3" font-size="13">The thermal R-value — the comfort layer</text>
+
+  <!-- Layer 2 — Reflective radiant barrier -->
+  <g>
+    <path d="M210 420 h300 l80 -46 h-300 z" fill="url(#reflect)"/>
+    <path d="M210 420 h300 v18 h-300 z" fill="#3a586f"/>
+    <path d="M510 420 l80 -46 v18 l-80 46 z" fill="#2c4456"/>
+    <path d="M210 420 h300 l80 -46 h-300 z" fill="none" stroke="rgba(255,255,255,0.5)"/>
+    <line x1="555" y1="391" x2="660" y2="391" stroke="rgba(84,186,255,0.5)"/>
+    <circle cx="555" cy="391" r="3" fill="#35baff"/>
+  </g>
+  <text x="668" y="382" fill="#f7fbff" font-size="17" font-weight="600">Reflective radiant barrier</text>
+  <text x="668" y="404" fill="#b8cee3" font-size="13">Bounces heat — out in summer, in in winter</text>
+
+  <!-- Layer 1 — Magnetic edge mount (glass side, bottom) -->
+  <g>
+    <path d="M210 504 h300 l80 -46 h-300 z" fill="#0a1b2c"/>
+    <path d="M210 504 h300 v18 h-300 z" fill="#06121e"/>
+    <path d="M510 504 l80 -46 v18 l-80 46 z" fill="#050f18"/>
+    <path d="M210 504 h300 l80 -46 h-300 z" fill="none" stroke="rgba(255,179,107,0.6)"/>
+    <!-- magnet strips -->
+    <rect x="226" y="487" width="26" height="10" rx="2" fill="#ffb36b"/>
+    <rect x="470" y="487" width="26" height="10" rx="2" fill="#ffb36b"/>
+    <line x1="555" y1="475" x2="660" y2="475" stroke="rgba(84,186,255,0.5)"/>
+    <circle cx="555" cy="475" r="3" fill="#35baff"/>
+  </g>
+  <text x="668" y="466" fill="#f7fbff" font-size="17" font-weight="600">Magnetic edge mounts</text>
+  <text x="668" y="488" fill="#b8cee3" font-size="13">Renter-friendly — no damage, reusable</text>
+
+  <!-- Footer note: the 4 criteria -->
+  <rect x="48" y="578" width="864" height="40" rx="12" fill="rgba(13,55,87,0.5)" stroke="rgba(84,186,255,0.28)"/>
+  <text x="68" y="603" fill="#8bd8ff" font-size="13" font-weight="600">MATERIAL TARGET</text>
+  <text x="208" y="603" fill="#dfeaf5" font-size="13">UV fade-resistant · insulating · thin enough to roll &amp; print · durable for years of seasonal reuse</text>
+</svg>
